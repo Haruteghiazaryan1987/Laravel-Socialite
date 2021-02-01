@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     /*
@@ -74,16 +76,16 @@ class LoginController extends Controller
     }
 
     protected function _registerOrLoginUser($data) {
-        dd($data);
-        $user=User::where('email','=',$data->email)->first();
+        $user=User::where('email', '=', $data->email)->first();
         if(!$user){
+            $user=new User();
             $user->name=$data->name;
             $user->email=$data->email;
             $user->provider_id=$data->id;
             $user->avatar=$data->avatar;
             $user->save();
         }
-        dd($user);
+        // dd($user);
         Auth::login($user);
     }
 }
